@@ -1,0 +1,30 @@
+{
+    "name": "px-rem",
+    "version": "1.0.1",
+    "description": "a tool to convert px to rem",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/finance-sh/px-rem.git"
+    },
+    "keywords": [
+        "pxtorem",
+        "px2rem",
+        "adaptive.js"
+    ],
+    "author": "zhousheng",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/finance-sh/px-rem/issues"
+    },
+    "homepage": "https://github.com/finance-sh/px-rem#readme",
+    "bin": {
+        "px2rem": "./index.js"
+    },
+    "dependencies": {
+        "glob": "7.1.1"
+    }
+}
