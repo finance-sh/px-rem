@@ -1,10 +1,21 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
-const config = require('./pxrem.config.js');
+let program = require('commander');
+let config = require('./pxrem.config.js');
+const packageJson = require('./package.json');
+
+program
+  .version(packageJson.version)
+  .option('-c, --config <path>', 'set config path')
+  .parse(process.argv);
+if (program.config) {
+	config = require(process.cwd() + '/' + program.config);
+}
 
 const pxToRemRatio = config.pxToRemRatio;
-
 
 let accMul = function (num1, num2) {
     var m = 0,
@@ -42,7 +53,7 @@ glob(config.patterns, {}, function (err, files) {
 				
 			});
 			fs.writeFile(newFilePath, newData, 'utf-8', function () {
-
+				console.log(newFilePath);
 			});
 		});
 	});
