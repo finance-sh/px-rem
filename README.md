@@ -16,23 +16,23 @@ you can set a config
 
 default config:
 
-    ```javascript
+```javascript
     {
 	      patterns: "**/*.css",
 	      pxToRemRatio: 0.01,
 	      convertBorder1px: true
     }
-    ```
+```
     
 you can create a new file in the current directory, for example: pxrem.config.js
     
-    ```javascript
+```javascript
     module.exports = {
 	      patterns: "./WrcIosselect/lib/WrcIosselect.css",
 	      pxToRemRatio: 0.01,
 	      convertBorder1px: true
     };
-    ```
+```
     
 then you can run like this: 
     
@@ -71,23 +71,23 @@ then you can run like this:
 
 默认 config:
 
-    ```javascript
+```javascript
     {
 	      patterns: "**/*.css",
 	      pxToRemRatio: 0.01,
 	      convertBorder1px: true
     }
-    ```
+```
     
 你也可以在当前文件夹下新建一个配置文件, 比如: pxrem.config.js
     
-    ```javascript
+```javascript
     module.exports = {
 	      patterns: "./WrcIosselect/lib/WrcIosselect.css",
 	      pxToRemRatio: 0.01,
 	      convertBorder1px: true
     };
-    ```
+```
     
 然后你可以在命令行输入时作为参数带入： 
     
