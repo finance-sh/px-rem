@@ -18,9 +18,11 @@ default config:
 
 ```javascript
     {
-	      patterns: "**/*.css",
-	      pxToRemRatio: 0.01,
-	      convertBorder1px: true
+	    patterns: "**/*.css",
+        pxToRemRatio: 0.01,
+        ignoreCss: [],
+        isReplace: false,
+        convertBorder1px: false
     }
 ```
     
@@ -28,9 +30,11 @@ you can create a new file in the current directory, for example: pxrem.config.js
     
 ```javascript
     module.exports = {
-	      patterns: "./WrcIosselect/lib/WrcIosselect.css",
-	      pxToRemRatio: 0.01,
-	      convertBorder1px: true
+	    patterns: "./WrcIosselect/lib/WrcIosselect.css",
+        pxToRemRatio: 0.01,
+        ignoreCss: ['font-size', 'line-height'],
+        isReplace: false,
+        convertBorder1px: true
     };
 ```
     
@@ -43,6 +47,10 @@ then you can run like this:
     patterns: visite https://www.npmjs.com/package/glob to see pattern
     
     pxToRemRatio: the ratio of px and rem
+
+    ignoreCss: will not convert the CSS property
+    
+    isReplace: whether or not to replace the original file
     
     convertBorder1px: whether or not to convert 1 pixel wide border
     
@@ -73,9 +81,11 @@ then you can run like this:
 
 ```javascript
     {
-	      patterns: "**/*.css",
-	      pxToRemRatio: 0.01,
-	      convertBorder1px: true
+	    patterns: "**/*.css",
+        pxToRemRatio: 0.01,
+        ignoreCss: [],
+        isReplace: false,
+        convertBorder1px: false
     }
 ```
     
@@ -83,9 +93,11 @@ then you can run like this:
     
 ```javascript
     module.exports = {
-	      patterns: "./WrcIosselect/lib/WrcIosselect.css",
-	      pxToRemRatio: 0.01,
-	      convertBorder1px: true
+	    patterns: "./WrcIosselect/lib/WrcIosselect.css",
+        pxToRemRatio: 0.01,
+        ignoreCss: ['font-size', 'line-height'],
+        isReplace: false,
+        convertBorder1px: true
     };
 ```
     
@@ -98,6 +110,10 @@ then you can run like this:
     patterns: 访问 https://www.npmjs.com/package/glob 然后查看patterns参数
     
     pxToRemRatio: px和rem的比值，默认0.01
+
+    ignoreCss: 该数组内的css属性将不会被转换
+    
+    isReplace: 是否替换原来的文件，如果为true则替换，否则会在当前文件夹下生成一个原文件名 + '-px2rem' 的文件
     
     convertBorder1px: 是否转换1px宽度的border,默认不转换
     

@@ -12,10 +12,11 @@ program
   .option('-c, --config <path>', 'set config path')
   .parse(process.argv);
 if (program.config) {
-	config = require(process.cwd() + '/' + program.config);
+	configUser = require(process.cwd() + '/' + program.config);
+	Object.assign(config, configUser);
 }
-
 const pxToRemRatio = config.pxToRemRatio;
+
 
 let accMul = function (num1, num2) {
     var m = 0,
@@ -37,12 +38,28 @@ let pxReg = /(\d*?(?:\.\d+)?)px/ig;
 let cssReg = /(\b.*?\b\u0020*:)(.*?)(;|"|\r\n)/g;
 glob(config.patterns, {}, function (err, files) {
 	files.forEach(function (v, i, o) {
-		let newFilePath = v.replace(/(.*\/)?(.*?)(\..*?)/, function (m, n1, n2, n3) {
-			return (n1? n1: '') + (n2 + '-px2rem') + (n3? n3: '');  
-		});
+		if (v.includes('-px2rem')) {
+			return;
+		}
+		let newFilePath = v;
+		if (!config.isReplace) {
+			newFilePath = v.replace(/(.*\/)?(.*?)(\..*?)/, function (m, n1, n2, n3) {
+				return (n1? n1: '') + (n2 + '-px2rem') + (n3? n3: '');  
+			});
+		}
 		fs.readFile(v, 'utf-8', function (err, data) {
 			let newData = data.replace(cssReg, function (m, n1, n2, n3) {
 				return n1 + n2.replace(pxReg, function (pxm, pxn1) {
+					if (config.ignoreCss.length) {
+						let isIgnore = config.ignoreCss.some(function (cssV, cssIndex) {
+							if (n1.includes(cssV)) {
+								return true;
+							}
+						});
+						if (isIgnore) {
+							return pxm;
+						}
+					}
 					if (!config.convertBorder1px && /border/i.test(n1) && pxn1 === '1') {
 						return pxm;
 					}
