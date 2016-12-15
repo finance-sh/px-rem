@@ -15,6 +15,7 @@ you can set a config
 ##config
 
 default config:
+
     ```javascript
     {
 	      patterns: "**/*.css",
@@ -69,6 +70,7 @@ then you can run like this:
 ##config
 
 默认 config:
+
     ```javascript
     {
 	      patterns: "**/*.css",
