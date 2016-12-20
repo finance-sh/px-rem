@@ -2,7 +2,7 @@
 
 a tool to convert px to rem
 
-##how to use
+##How to convert static files
 
     npm install px-rem -g
     
@@ -11,6 +11,7 @@ a tool to convert px to rem
 you can set a config
     
     px2rem --config pxrem.config.js
+
     
 ##config
 
@@ -57,10 +58,58 @@ then you can run like this:
     
 ---------------------------------------------------------------------------------------------------------------
 
+##How to use as a webpack loader
+
+package.json:
+
+```javascript
+    "devDependencies": {
+        "px-rem": "*"
+    }
+```
+
+    in webpack.config.js:
+
+```javascript
+    module.exports = {
+        node: {
+            fs: "empty"
+        },
+        module: {
+            loaders: [
+                {
+                    test: /\.css$/,
+                    loader: 'style-loader!css-loader!px-rem'
+                }
+            ]
+        }
+    }
+```
+
+you must create a file called pxrem.webpack.conf.json in the project root directory (same directory with package.json) like this:
+
+```javascript
+    {
+        "pxToRemRatio": 0.01,
+        "ignoreCss": [],
+        "convertBorder1px": true
+    }
+```
+
+then you can convert px to rem in your project
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+
 
 将px转换为rem的工具
 
-##怎样使用
+##怎样转换静态文件
     
 安装：
     
@@ -135,6 +184,49 @@ then you can run like this:
     
     
     2，如果是将width=device-width下，以px为单位的老css文件转换为rem, 如果新的设计图为640，这个值一般为 1 / (640 / 10) * 2, 如果新的设计图为750，这个值为 1 / (750 / 10) * 2.3333
+
+
+##怎么在webpack中使用
+
+package.json:
+
+```javascript
+    "devDependencies": {
+        "px-rem": "*"
+    }
+```
+
+    配置webpack.config.js:
+
+```javascript
+    module.exports = {
+        node: {
+            fs: "empty"
+        },
+        module: {
+            loaders: [
+                {
+                    test: /\.css$/,
+                    loader: 'style-loader!css-loader!px-rem'
+                }
+            ]
+        }
+    }
+```
+
+你必须新建一个文件叫：pxrem.webpack.conf.json 在你的项目根目录 (和package.json同一文件夹下):
+
+```javascript
+    {
+        "pxToRemRatio": 0.01,
+        "ignoreCss": [],
+        "convertBorder1px": true
+    }
+```
+
+当你在webpack项目的开发环境使用时，它会自动将对应文件中的px转换为rem为单位（原文件并没有转换，内存中的对应文件转换，可以访问对应页面查看效果）
+
+当你编译到生产环境时，对应的文件已经被转换
     
     
     

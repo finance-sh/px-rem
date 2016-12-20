@@ -1,6 +1,6 @@
 {
     "name": "px-rem",
-    "version": "1.0.6",
+    "version": "1.0.8",
     "description": "a tool to convert px to rem",
     "main": "index.js",
     "scripts": {
@@ -21,7 +21,7 @@
         "url": "https://github.com/finance-sh/px-rem/issues"
     },
     "bin": {
-        "px2rem" : "./index.js"
+        "px2rem" : "./bin/index.js"
     },
     "homepage": "https://github.com/finance-sh/px-rem#readme",
     "dependencies": {

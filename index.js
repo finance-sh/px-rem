@@ -1,24 +1,16 @@
-#!/usr/bin/env node
+var path = require('path');
+var fs = require('fs');
+var config = require('./pxrem.config.js');
+var pxReg = /(\d*?(?:\.\d+)?)px/ig;
+var cssReg = /(\b.*?\b\u0020*:)(.*?)(;|"|\r\n)/g;
 
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
-let program = require('commander');
-let config = require('./pxrem.config.js');
-const packageJson = require('./package.json');
+var config = {
+	pxToRemRatio: 0.01,
+	ignoreCss: [],
+	convertBorder1px: false
+};
 
-program
-  .version(packageJson.version)
-  .option('-c, --config <path>', 'set config path')
-  .parse(process.argv);
-if (program.config) {
-	configUser = require(process.cwd() + '/' + program.config);
-	Object.assign(config, configUser);
-}
-const pxToRemRatio = config.pxToRemRatio;
-
-
-let accMul = function (num1, num2) {
+function accMul(num1, num2) {
     var m = 0,
         s1 = num1.toString(),
         s2 = num2.toString();
@@ -34,47 +26,37 @@ let accMul = function (num1, num2) {
     };
     return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
 };
-let pxReg = /(\d*?(?:\.\d+)?)px/ig;
-let cssReg = /(\b.*?\b\u0020*:)(.*?)(;|"|\r\n)/g;
-glob(config.patterns, {}, function (err, files) {
-	files.forEach(function (v, i, o) {
-		if (v.includes('-px2rem')) {
-			return;
-		}
-		let newFilePath = v;
-		if (!config.isReplace) {
-			newFilePath = v.replace(/(.*\/)?(.*?)(\..*?)/, function (m, n1, n2, n3) {
-				return (n1? n1: '') + (n2 + '-px2rem') + (n3? n3: '');  
-			});
-		}
-		fs.readFile(v, 'utf-8', function (err, data) {
-			let newData = data.replace(cssReg, function (m, n1, n2, n3) {
-				return n1 + n2.replace(pxReg, function (pxm, pxn1) {
-					if (config.ignoreCss.length) {
-						let isIgnore = config.ignoreCss.some(function (cssV, cssIndex) {
-							if (n1.includes(cssV)) {
-								return true;
-							}
-						});
-						if (isIgnore) {
-							return pxm;
+// Identity loader with SourceMap support
+module.exports = function(data) {
+	this.cacheable();
+	var callback = this.async();
+    var configPath = path.resolve("pxrem.webpack.conf.json");
+    console.log(configPath);
+    this.addDependency(configPath);
+    fs.readFile(configPath, "utf-8", function(err, userConfig) {
+        if(err) return callback(err);
+        Object.assign(config, JSON.parse(userConfig));
+        var newData = data.replace(cssReg, function (m, n1, n2, n3) {
+			return n1 + n2.replace(pxReg, function (pxm, pxn1) {
+				if (config.ignoreCss.length) {
+					var isIgnore = config.ignoreCss.some(function (cssV, cssIndex) {
+						if (n1.includes(cssV)) {
+							return true;
 						}
-					}
-					if (!config.convertBorder1px && /border/i.test(n1) && pxn1 === '1') {
+					});
+					if (isIgnore) {
 						return pxm;
 					}
-					else {
-						return accMul(pxn1, pxToRemRatio) + 'rem';
-					}
-				}) + n3;
-				
-			});
-			fs.writeFile(newFilePath, newData, 'utf-8', function () {
-				console.log(newFilePath);
-			});
+				}
+				if (!config.convertBorder1px && /border/i.test(n1) && pxn1 === '1') {
+					return pxm;
+				}
+				else {
+					return accMul(pxn1, config.pxToRemRatio) + 'rem';
+				}
+			}) + n3;
+			
 		});
-	});
-});
-
-
-
+        callback(null, newData);
+    });
+};
