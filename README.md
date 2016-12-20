@@ -118,8 +118,10 @@ then you can convert px to rem in your project
 然后跑下命令
     
     px2rem
+    
     
 你也可以设置一个配置文件
+
     
     
     px2rem --config pxrem.config.js
