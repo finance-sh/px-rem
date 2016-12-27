@@ -86,7 +86,7 @@ package.json:
     }
 ```
 
-If you use less-loader, sass-loader, postcss-loader, you need to put px-rem on their left
+If you use less-loader, sass-loader, postcss-loader and other processing tools, you need to put px-rem on their left
 
 
 you must create a file called pxrem.webpack.conf.json in the project root directory (same directory with package.json) like this:
@@ -219,7 +219,7 @@ package.json:
     }
 ```
 
-如果你使用less-loader,sass-loader,postcss-loader,你需要把px-rem放到它们的左边
+如果你使用less-loader,sass-loader,postcss-loader等处理性工具，你需要把px-rem放到它们的左边
 
 
 你必须新建一个文件叫：pxrem.webpack.conf.json 在你的项目根目录 (和package.json同一文件夹下):
