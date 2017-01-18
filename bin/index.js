@@ -35,7 +35,7 @@ let accMul = function (num1, num2) {
     return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
 };
 let pxReg = /(\d*?(?:\.\d+)?)px/ig;
-let cssReg = /(\b.*?\b\u0020*:)(.*?)(;|"|\r\n)/g;
+let cssReg = /(\b.*?\b\u0020*:)(.*?)(;|"|(?:\r\n)|\})/g;
 glob(config.patterns, {}, function (err, files) {
 	files.forEach(function (v, i, o) {
 		if (v.includes('-px2rem')) {
@@ -60,7 +60,7 @@ glob(config.patterns, {}, function (err, files) {
 							return pxm;
 						}
 					}
-					if (!config.convertBorder1px && /border/i.test(n1) && pxn1 === '1') {
+					if (!config.convertBorder1px && pxn1 === '1') {
 						return pxm;
 					}
 					else {

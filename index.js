@@ -2,7 +2,7 @@ var path = require('path');
 var fs = require('fs');
 var config = require('./pxrem.config.js');
 var pxReg = /(\d*?(?:\.\d+)?)px/ig;
-var cssReg = /(\b.*?\b\u0020*:)(.*?)(;|"|\r\n)/g;
+var cssReg = /(\b.*?\b\u0020*:)(.*?)(;|"|(?:\r\n)|\})/g;
 
 function accMul(num1, num2) {
     var m = 0,
@@ -25,7 +25,8 @@ module.exports = function(data) {
 	this.cacheable();
 	var callback = this.async();
     var configPath = path.resolve("pxrem.webpack.conf.json");
-    fs.access(configPath, fs.constants.R_OK, function (err) {
+    var rOk = fs.constants? fs.constants.R_OK: fs.R_OK;
+    fs.access(configPath, rOk, function (err) {
     	if (err) {
     		throw new Error('when you use px-rem,you must you must create a file called pxrem.webpack.conf.json in the project root directory (same directory with package.json) ');
     	}
@@ -46,7 +47,7 @@ module.exports = function(data) {
 								return pxm;
 							}
 						}
-						if (!config.convertBorder1px && /border/i.test(n1) && pxn1 === '1') {
+						if (!config.convertBorder1px && pxn1 === '1') {
 							return pxm;
 						}
 						else {
